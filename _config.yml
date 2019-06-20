@@ -6,7 +6,7 @@ email: chaoxuzhong.me@gmail.com
 description: "Zcx Blog"
 keyword: ""
 url: ""              # your host, for absolute URL
-baseurl: "/zcxblog"         # for example, '/blog' if your blog hosted on 'host/blog'
+baseurl: "/"         # for example, '/blog' if your blog hosted on 'host/blog'
 
 
 

@@ -1,0 +1,19 @@
+---
+layout:     post
+title:      "Welcome to Zcx Blog"
+subtitle:   " \"Hello World, Hello Blog\""
+date:       2019-06-18 22:23:00
+author:     "Zcx"
+header-img: "img/post-bg-2015.jpg"
+tags:
+    - 生活
+---
+
+> “Yeah It's on. ”
+
+
+## 前言
+
+
+Zcx 的 Blog 就这么开通了。
+
