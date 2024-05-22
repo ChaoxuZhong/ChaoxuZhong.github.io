@@ -1,0 +1,28 @@
+---
+layout:       post
+title:        "Hello 2024, Hello 30, Hello Blog"
+subtitle:     "你好 2024， 你好 30， 你好 博客"
+date:         2024-05-22 17:42:00
+author:       "Chaoxu"
+header-img:   "img/in-post/post-bg-2024-helloblog.jpg"
+header-mask:  0.3
+catalog:      true
+multilingual: true
+tags:
+  - En
+---
+
+
+<!-- Chinese Version -->
+
+<div class="zh post-container">
+    {% capture about_zh %}{% include posts/2024-05-22-hello/zh.md %}{% endcapture %}
+    {{ about_zh | markdownify }}
+</div>
+
+<!-- English Version -->
+
+<div class="en post-container">
+    {% capture about_en %}{% include posts/2024-05-22-hello/en.md %}{% endcapture %}
+    {{ about_en | markdownify }}
+</div>
