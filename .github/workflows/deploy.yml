@@ -22,17 +22,19 @@ jobs:
       - name: Install and Build
         run: |
           npm install -g honkit
-          cd notes  # 进入 notes 目录
-          # 检查文件是否存在
-          ls -la
-          # 安装依赖（如果需要）
-          npm install
-          # 直接在 notes 目录构建
+          cd notes
           honkit build
+
+      # 新增：复制源文件
+      - name: Copy Source Files
+        run: |
+          mkdir -p temp/notes
+          cp -r notes/_book/* temp/notes/
+          cp notes/README.md notes/SUMMARY.md temp/notes/
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./notes/_book  # 这个路径是对的，因为 _book 在 notes 目录下
-          destination_dir: notes      # 部署到 gh-pages 的 notes 目录
+          publish_dir: ./temp/notes    # 改为发布临时目录
+          destination_dir: notes
