@@ -4,3 +4,7 @@ node_modules
 */.DS_Store
 */*/.DS_Store
 *.sh
+/notes/package-lock.json
+/notes/package.json
+/notes/node_modules/
+/notes/_book/
