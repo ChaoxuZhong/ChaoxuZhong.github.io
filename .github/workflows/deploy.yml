@@ -1,0 +1,35 @@
+name: Deploy GitBook
+on:
+  push:
+    branches:
+      - master  # 改成 master，因为你用的是 master 分支
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: |
+          npm install -g honkit
+          cd notes  # 进入 GitBook 目录
+          npm install
+
+      - name: Build
+        run: |
+          cd notes
+          honkit build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./notes/_book
+          destination_dir: notes  # 部署到 /notes 目录
