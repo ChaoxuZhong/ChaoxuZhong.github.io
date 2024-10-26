@@ -1,0 +1,443 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>一些无关紧要的问题记录 · MIT 6.824 学习笔记</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.0.2">
+        <meta name="author" content="Your Name">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="../Mit6.824/02_RpcAndThreads.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../Mit6.824/Introduction.md">
+            
+                <span>
+            
+                    
+                    MIT 6.824 2021 分布式系统
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../Mit6.824/01_Introduction.html">
+            
+                <a href="../Mit6.824/01_Introduction.html">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="../Mit6.824/02_RpcAndThreads.html">
+            
+                <a href="../Mit6.824/02_RpcAndThreads.html">
+            
+                    
+                    测试
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.3" data-path="GitNote搭建Log.html">
+            
+                <a href="GitNote搭建Log.html">
+            
+                    
+                    一些无关紧要的问题记录
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >一些无关紧要的问题记录</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="gitbook-搭建日志">GitBook 搭建日志</h1>
+<h2 id="环境准备">环境准备</h2>
+<h3 id="1-项目初始化">1. 项目初始化</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># 在本地创建项目目录</span>
+<span class="hljs-built_in">mkdir</span> -p chaoxuzhong.github.io/notes
+<span class="hljs-built_in">cd</span> chaoxuzhong.github.io/notes
+</code></pre>
+<h3 id="2-gitbook-安装">2. GitBook 安装</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># 安装 GitBook CLI</span>
+<span class="hljs-built_in">sudo</span> npm install -g gitbook-cli
+</code></pre>
+<h2 id="问题排查">问题排查</h2>
+<h3 id="1-gitbook-初始化报错">1. GitBook 初始化报错</h3>
+<p>执行 <code>gitbook init</code> 时遇到以下错误：</p>
+<pre><code class="lang-text">Installing GitBook 3.2.3
+/usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287
+if (cb) cb.apply(this, arguments)
+^
+TypeError: cb.apply is not a function
+at /usr/local/lib/node_modules/gitbook-cli/node_modules/npm/node_modules/graceful-fs/polyfills.js:287:18
+at FSReqCallback.oncomplete (node:fs:199:5)
+</code></pre>
+<h3 id="2-尝试使用-honkit">2. 尝试使用 HonKit</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># 卸载 GitBook CLI</span>
+<span class="hljs-built_in">sudo</span> npm uninstall -g gitbook-cli
+
+<span class="hljs-comment"># 安装 HonKit</span>
+npm install -g honkit
+</code></pre>
+<p>但遇到新错误：</p>
+<pre><code class="lang-bash">/usr/local/lib/node_modules/honkit/node_modules/undici/lib/web/fetch/response.js:527
+ReadableStream
+^
+ReferenceError: ReadableStream is not defined
+</code></pre>
+<h2 id="解决方案：降级-nodejs">解决方案：降级 Node.js</h2>
+<h3 id="1-安装-nvm">1. 安装 nvm</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># 安装 nvm</span>
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+
+<span class="hljs-comment"># 使配置生效</span>
+<span class="hljs-built_in">source</span> ~/.zshrc
+</code></pre>
+<h3 id="2-切换-nodejs-版本">2. 切换 Node.js 版本</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># 安装 Node.js v16</span>
+nvm install 16
+
+<span class="hljs-comment"># 切换到 v16</span>
+nvm use 16
+</code></pre>
+<h3 id="3-重新安装-honkit">3. 重新安装 HonKit</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># 卸载旧版本</span>
+npm uninstall -g honkit
+
+<span class="hljs-comment"># 安装新版本</span>
+npm install -g honkit
+</code></pre>
+<h3 id="4-初始化项目">4. 初始化项目</h3>
+<pre><code class="lang-bash">honkit init
+</code></pre>
+<h3 id="5-切换-nodejs-版本-到18才解决问题">5. 切换 Node.js 版本 到18才解决问题</h3>
+<pre><code class="lang-bash"><span class="hljs-comment"># 安装 Node.js v16</span>
+nvm install 18
+
+<span class="hljs-comment"># 切换到 v16</span>
+nvm use 18
+</code></pre>
+<h2 id="本地项目启动">本地项目启动</h2>
+<pre><code class="lang-bash"><span class="hljs-comment"># 初始化书籍</span>
+honkit init
+
+<span class="hljs-comment"># 启动本地服务</span>
+honkit serve
+</code></pre>
+<h2 id="支持插件，增加导航功能">支持插件，增加导航功能</h2>
+<p><code>book.json</code> 配置文件中添加插件来支持导航功能。让我帮你设置：</p>
+<ol>
+<li><p>首先创建或编辑 <code>book.json</code> 文件：</p>
+<pre><code class="lang-json">{
+<span class="hljs-string">"title"</span>: <span class="hljs-string">"MIT 6.824 学习笔记"</span>,
+<span class="hljs-string">"author"</span>: <span class="hljs-string">"Your Name"</span>,
+<span class="hljs-string">"plugins"</span>: [
+ <span class="hljs-string">"chapter-fold"</span>,
+ <span class="hljs-string">"back-to-top-button"</span>,
+ <span class="hljs-string">"copy-code-button"</span>,
+ <span class="hljs-string">"search-pro"</span>
+],
+<span class="hljs-string">"pluginsConfig"</span>: {
+ <span class="hljs-string">"theme-default"</span>: {
+   <span class="hljs-string">"showLevel"</span>: <span class="hljs-literal">true</span>
+ }
+}
+}
+</code></pre>
+</li>
+<li><p>安装插件：
+```bash</p>
+<h1 id="删除之前的-nodemodules-和-book">删除之前的 node_modules 和 _book</h1>
+<p>rm -rf node_modules _book</p>
+</li>
+</ol>
+<h1 id="安装插件">安装插件</h1>
+<p>honkit install</p>
+<pre><code>
+3. 重启服务：
+```bash
+honkit serve
+</code></pre><p>主要插件说明：</p>
+<ul>
+<li><code>expandable-chapters</code>：支持章节的展开/折叠</li>
+<li><code>expandable-chapters-small</code>：使用更小的箭头图标</li>
+<li><code>chapter-fold</code>：支持目录折叠功能</li>
+<li><code>navigation</code>：添加导航功能</li>
+</ul>
+<p>如果安装插件时遇到问题，也可以尝试使用 npm 直接安装：</p>
+<pre><code class="lang-bash">npm install gitbook-plugin-expandable-chapters
+npm install gitbook-plugin-chapter-fold
+npm install gitbook-plugin-navigation
+</code></pre>
+<p>然后重新构建和启动服务：</p>
+<pre><code class="lang-bash">honkit build
+honkit serve
+</code></pre>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="../Mit6.824/02_RpcAndThreads.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 测试">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"一些无关紧要的问题记录","level":"1.3","depth":1,"previous":{"title":"测试","level":"1.2.2","depth":2,"path":"Mit6.824/02_RpcAndThreads.md","ref":"Mit6.824/02_RpcAndThreads.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Your Name","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"MIT 6.824 学习笔记","gitbook":"*"},"file":{"path":"Log/GitNote搭建Log.md","mtime":"2024-10-26T17:01:52.543Z","type":"markdown"},"gitbook":{"version":"6.0.2","time":"2024-10-26T17:02:12.174Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
