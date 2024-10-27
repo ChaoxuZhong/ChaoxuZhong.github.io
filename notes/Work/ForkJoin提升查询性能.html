@@ -1,0 +1,710 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <title>ForkJoin提升查询性能 · MIT 6.824 学习笔记</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="HonKit 6.0.2">
+        <meta name="author" content="Your Name">
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/@honkit/honkit-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="Work-Solution-Introduction.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book honkit-cloak">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../Mit6.824/Introduction.md">
+            
+                <span>
+            
+                    
+                    MIT 6.824 2021 分布式系统
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../Mit6.824/01_Introduction.html">
+            
+                <a href="../Mit6.824/01_Introduction.html">
+            
+                    
+                    介绍
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="../Mit6.824/02_RpcAndThreads.html">
+            
+                <a href="../Mit6.824/02_RpcAndThreads.html">
+            
+                    
+                    测试
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" data-path="../Log/GitNote搭建Log.html">
+            
+                <a href="../Log/GitNote搭建Log.html">
+            
+                    
+                    GitNode搭建日志
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" data-path="Work-Solution-Introduction.html">
+            
+                <a href="Work-Solution-Introduction.html">
+            
+                    
+                    工作-问题处理
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter active" data-level="1.4.1" data-path="ForkJoin提升查询性能.html">
+            
+                <a href="ForkJoin提升查询性能.html">
+            
+                    
+                    ForkJoin提升查询性能
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://github.com/honkit/honkit" target="blank" class="gitbook-link">
+            Published with HonKit
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >ForkJoin提升查询性能</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="java并行处理优化实践：从串行到forkjoin的性能提升之路">Java并行处理优化实践：从串行到ForkJoin的性能提升之路</h1>
+<h2 id="一、问题背景">一、问题背景</h2>
+<p>最近在处理期权询价数据时，遇到了一个性能瓶颈。系统需要处理大量的期权询价数据，这些数据具有层级结构，为了简化，代码采用三层结构：标的 -&gt; 期限 -&gt; 结构。每一层都需要进行数据分组和转换，并按照产品、运营要求进行排序，当数据量达到一定规模时（10个标的，每个标的1000条数据），串行处理的性能明显不足。</p>
+<h2 id="二、实践过程">二、实践过程</h2>
+<h3 id="21--数据结构抽象">2.1  数据结构抽象</h3>
+<p>在开始具体的处理逻辑之前，首先需要设计合适的数据结构。为方便展示，简化采用自顶向下三层嵌套结构，每层存储相应的数据和对下层的引用。这种结构清晰地反映了业务模型的层级关系，便于后续的并行处理。</p>
+<p>为了模拟真实环境中的数据处理开销，在每个构造函数中添加了1毫秒的延时。在实际业务中，这里可能是数据转换、计算或者其他业务处理逻辑。</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataModels</span> {
+    <span class="hljs-meta">@Data</span> <span class="hljs-comment">// 使用Lombok简化getter/setter</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StructureData</span> {
+        <span class="hljs-keyword">private</span> String structureName;
+        <span class="hljs-keyword">private</span> List&lt;OptionInquiry&gt; inquiries;
+
+        <span class="hljs-keyword">public</span> <span class="hljs-title function_">StructureData</span><span class="hljs-params">(String structureName, List&lt;OptionInquiry&gt; inquiries)</span> {
+            <span class="hljs-built_in">this</span>.structureName = structureName;
+            <span class="hljs-built_in">this</span>.inquiries = inquiries;
+              <span class="hljs-comment">// 构造函数中的延时模拟数据处理耗时，下面构造器相同</span>
+        }
+    }
+
+    <span class="hljs-meta">@Data</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TermData</span> {
+        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> term;
+        <span class="hljs-keyword">private</span> List&lt;StructureData&gt; structures;
+
+        <span class="hljs-keyword">public</span> <span class="hljs-title function_">TermData</span><span class="hljs-params">(<span class="hljs-type">int</span> term, List&lt;StructureData&gt; structures)</span> {
+            <span class="hljs-built_in">this</span>.term = term;
+            <span class="hljs-built_in">this</span>.structures = structures;
+            ThreadUtil.sleep(<span class="hljs-number">1</span>);
+        }
+    }
+
+    <span class="hljs-meta">@Data</span>
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AssetData</span> {
+        <span class="hljs-keyword">private</span> String assetCode;
+        <span class="hljs-keyword">private</span> List&lt;TermData&gt; terms;
+
+        <span class="hljs-keyword">public</span> <span class="hljs-title function_">AssetData</span><span class="hljs-params">(String assetCode, List&lt;TermData&gt; terms)</span> {
+            <span class="hljs-built_in">this</span>.assetCode = assetCode;
+            <span class="hljs-built_in">this</span>.terms = terms;
+            ThreadUtil.sleep(<span class="hljs-number">1</span>);
+        }
+    }
+}
+</code></pre>
+<h3 id="22-处理流程抽象">2.2 处理流程抽象</h3>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">InquiryProcessor</span> {
+    <span class="hljs-comment">// 公共的处理入口，定义了基本的处理流程</span>
+    <span class="hljs-keyword">protected</span> List&lt;DataModels.AssetData&gt; processInquiries(List&lt;OptionInquiry&gt; inquiries) {
+        <span class="hljs-comment">// 按标的分组</span>
+        Map&lt;String, List&lt;OptionInquiry&gt;&gt; assetGroups = groupByAsset(inquiries);
+        <span class="hljs-keyword">return</span> processAssetGroups(assetGroups);
+    }
+        <span class="hljs-comment">// 具体的处理策略由子类实现</span>
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">abstract</span> List&lt;DataModels.AssetData&gt; processAssetGroups(Map&lt;String, List&lt;OptionInquiry&gt;&gt; assetGroups);
+
+      <span class="hljs-comment">// 提供通用的分组工具方法</span>
+    <span class="hljs-keyword">protected</span> Map&lt;String, List&lt;OptionInquiry&gt;&gt; <span class="hljs-title function_">groupByAsset</span><span class="hljs-params">(List&lt;OptionInquiry&gt; inquiries)</span> {
+        <span class="hljs-keyword">return</span> inquiries.stream().collect(Collectors.groupingBy(OptionInquiry::getUnderlyingAsset));
+    }
+
+    <span class="hljs-keyword">protected</span> Map&lt;Integer, List&lt;OptionInquiry&gt;&gt; <span class="hljs-title function_">groupByTerm</span><span class="hljs-params">(List&lt;OptionInquiry&gt; inquiries)</span> {
+        <span class="hljs-keyword">return</span> inquiries.stream().collect(Collectors.groupingBy(OptionInquiry::getTerm));
+    }
+
+    <span class="hljs-keyword">protected</span> Map&lt;String, List&lt;OptionInquiry&gt;&gt; <span class="hljs-title function_">groupByStructure</span><span class="hljs-params">(List&lt;OptionInquiry&gt; inquiries)</span> {
+        <span class="hljs-keyword">return</span> inquiries.stream().collect(Collectors.groupingBy(OptionInquiry::getStructure));
+    }
+}
+</code></pre>
+<h4 id="221-串行处理">2.2.1 串行处理</h4>
+<p>最初的串行实现采用了简单直观的嵌套循环方式，代码易于理解但性能较差。这个实现可以作为性能基准，用来评估后续优化的效果。</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> List&lt;AssetData&gt; <span class="hljs-title function_">convertToThreeLayers</span><span class="hljs-params">(List&lt;OptionInquiry&gt; inquiries)</span> {
+    List&lt;AssetData&gt; result = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+
+    <span class="hljs-comment">// 按标的分组</span>
+    Map&lt;String, List&lt;OptionInquiry&gt;&gt; assetGroups = inquiries.stream()
+            .collect(Collectors.groupingBy(i -&gt; i.underlyingAsset));
+
+    <span class="hljs-keyword">for</span> (Map.Entry&lt;String, List&lt;OptionInquiry&gt;&gt; assetEntry : assetGroups.entrySet()) {
+        <span class="hljs-comment">// 按期限分组</span>
+        Map&lt;Integer, List&lt;OptionInquiry&gt;&gt; termGroups = assetEntry.getValue().stream()
+                .collect(Collectors.groupingBy(i -&gt; i.term));
+
+        List&lt;TermData&gt; terms = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-keyword">for</span> (Map.Entry&lt;Integer, List&lt;OptionInquiry&gt;&gt; termEntry : termGroups.entrySet()) {
+            <span class="hljs-comment">// 按结构分组</span>
+            Map&lt;String, List&lt;OptionInquiry&gt;&gt; structureGroups = termEntry.getValue().stream()
+                    .collect(Collectors.groupingBy(i -&gt; i.structure));
+
+            List&lt;StructureData&gt; structures = structureGroups.entrySet().stream()
+                    .map(e -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">StructureData</span>(e.getKey(), e.getValue()))
+                    .collect(Collectors.toList());
+
+            terms.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">TermData</span>(termEntry.getKey(), structures));
+        }
+
+        result.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">AssetData</span>(assetEntry.getKey(), terms));
+    }
+    <span class="hljs-keyword">return</span> result;
+}
+</code></pre>
+<h4 id="222-forkjoin优化并行处理">2.2.2 ForkJoin优化并行处理</h4>
+<p>使用ForkJoin框架进行并行处理是一个自然的选择，因为我们的数据天然具有层级结构。这里采用了两层任务拆分策略：</p>
+<ul>
+<li>第一层：将不同标的的处理拆分为独立任务</li>
+<li>第二层：将每个标的下的期限处理拆分为子任务</li>
+</ul>
+<p>这种策略既能充分利用多核性能，又不会产生过多的任务调度开销。</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ParallelInquiryProcessor</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">InquiryProcessor</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ForkJoinPool pool;
+
+    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ParallelInquiryProcessor</span><span class="hljs-params">()</span> {
+        <span class="hljs-built_in">this</span>.pool = ForkJoinPool.commonPool();
+    }
+
+    <span class="hljs-meta">@Override</span>
+    <span class="hljs-keyword">protected</span> List&lt;DataModels.AssetData&gt; processAssetGroups(Map&lt;String, List&lt;OptionInquiry&gt;&gt; assetGroups) {
+        <span class="hljs-keyword">return</span> pool.submit(() -&gt; {
+            List&lt;ForkJoinTask&lt;DataModels.AssetData&gt;&gt; assetTasks = assetGroups.entrySet().stream()
+                    .map(entry -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">AssetProcessTask</span>(entry.getKey(), entry.getValue()).fork())
+                    .collect(Collectors.toList());
+
+            <span class="hljs-keyword">return</span> assetTasks.stream()
+                    .map(ForkJoinTask::join)
+                    .collect(Collectors.toList());
+        }).join();
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AssetProcessTask</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">RecursiveTask</span>&lt;DataModels.AssetData&gt; {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String assetCode;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;OptionInquiry&gt; assetInquiries;
+
+        <span class="hljs-keyword">public</span> <span class="hljs-title function_">AssetProcessTask</span><span class="hljs-params">(String assetCode, List&lt;OptionInquiry&gt; assetInquiries)</span> {
+            <span class="hljs-built_in">this</span>.assetCode = assetCode;
+            <span class="hljs-built_in">this</span>.assetInquiries = assetInquiries;
+        }
+
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-keyword">protected</span> DataModels.AssetData <span class="hljs-title function_">compute</span><span class="hljs-params">()</span> {
+            Map&lt;Integer, List&lt;OptionInquiry&gt;&gt; termGroups = assetInquiries.stream()
+                    .collect(Collectors.groupingBy(OptionInquiry::getTerm));
+
+            List&lt;ForkJoinTask&lt;DataModels.TermData&gt;&gt; termTasks = termGroups.entrySet().stream()
+                    .map(entry -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">TermProcessTask</span>(entry.getKey(), entry.getValue()).fork())
+                    .collect(Collectors.toList());
+
+            List&lt;DataModels.TermData&gt; terms = termTasks.stream()
+                    .map(ForkJoinTask::join)
+                    .collect(Collectors.toList());
+
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DataModels</span>.AssetData(assetCode, terms);
+        }
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TermProcessTask</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">RecursiveTask</span>&lt;DataModels.TermData&gt; {
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> term;
+        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;OptionInquiry&gt; termInquiries;
+
+        <span class="hljs-keyword">public</span> <span class="hljs-title function_">TermProcessTask</span><span class="hljs-params">(<span class="hljs-type">int</span> term, List&lt;OptionInquiry&gt; termInquiries)</span> {
+            <span class="hljs-built_in">this</span>.term = term;
+            <span class="hljs-built_in">this</span>.termInquiries = termInquiries;
+        }
+
+        <span class="hljs-meta">@Override</span>
+        <span class="hljs-keyword">protected</span> DataModels.TermData <span class="hljs-title function_">compute</span><span class="hljs-params">()</span> {
+            Map&lt;String, List&lt;OptionInquiry&gt;&gt; structureGroups = termInquiries.stream()
+                    .collect(Collectors.groupingBy(OptionInquiry::getStructure));
+
+            List&lt;DataModels.StructureData&gt; structures = structureGroups.entrySet().stream()
+                    .map(e -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">DataModels</span>.StructureData(e.getKey(), e.getValue()))
+                    .collect(Collectors.toList());
+
+            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">DataModels</span>.TermData(term, structures);
+        }
+    }
+}
+</code></pre>
+<h2 id="三、性能测试">三、性能测试</h2>
+<p>为了准确评估优化效果，我们需要构建完整的测试环境。测试代码不仅要能够准确测量性能差异，还要能够验证不同处理方式的结果一致性。</p>
+<h3 id="31-构建测试类">3.1 构建测试类</h3>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PerformanceTest</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> {
+        <span class="hljs-type">Instant</span> <span class="hljs-variable">start</span> <span class="hljs-operator">=</span> Instant.now();
+        System.out.println(<span class="hljs-string">"开始处理期权询价数据..."</span>);
+
+        <span class="hljs-comment">// 获取标的列表</span>
+        List&lt;String&gt; assets = DataGenerator.getUnderlyingAssets();
+        System.out.println(<span class="hljs-string">"获取标的列表: "</span> + assets.size() + <span class="hljs-string">"个标的"</span>);
+        <span class="hljs-type">Instant</span> <span class="hljs-variable">afterGetAssets</span> <span class="hljs-operator">=</span> Instant.now();
+
+        <span class="hljs-comment">// 查询询价数据</span>
+        List&lt;OptionInquiry&gt; inquiries = DataGenerator.generateTestData();
+        System.out.println(<span class="hljs-string">"查询到询价数据: "</span> + inquiries.size() + <span class="hljs-string">"条"</span>);
+        <span class="hljs-type">Instant</span> <span class="hljs-variable">afterQueryData</span> <span class="hljs-operator">=</span> Instant.now();
+
+        <span class="hljs-comment">// 串行处理</span>
+        <span class="hljs-type">SerialInquiryProcessor</span> <span class="hljs-variable">serialProcessor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SerialInquiryProcessor</span>();
+        <span class="hljs-type">Instant</span> <span class="hljs-variable">startSerial</span> <span class="hljs-operator">=</span> Instant.now();
+        List&lt;DataModels.AssetData&gt; serialResult = serialProcessor.processInquiries(inquiries);
+        <span class="hljs-type">Instant</span> <span class="hljs-variable">afterSerial</span> <span class="hljs-operator">=</span> Instant.now();
+
+        <span class="hljs-comment">// 并行处理</span>
+        <span class="hljs-type">ParallelInquiryProcessor</span> <span class="hljs-variable">parallelProcessor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ParallelInquiryProcessor</span>();
+        <span class="hljs-type">Instant</span> <span class="hljs-variable">startParallel</span> <span class="hljs-operator">=</span> Instant.now();
+        List&lt;DataModels.AssetData&gt; parallelResult = parallelProcessor.processInquiries(inquiries);
+        <span class="hljs-type">Instant</span> <span class="hljs-variable">afterParallel</span> <span class="hljs-operator">=</span> Instant.now();
+
+        <span class="hljs-comment">// 打印统计信息</span>
+        printStatistics(start, afterGetAssets, afterQueryData,
+                startSerial, afterSerial, startParallel, afterParallel);
+          validateResults(serialResult, parallelResult);
+    }
+
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">printStatistics</span><span class="hljs-params">(Instant... timestamps)</span> {
+        System.out.println(<span class="hljs-string">"\n处理完成，统计信息："</span>);
+        System.out.println(<span class="hljs-string">"获取标的列表耗时: "</span> + Duration.between(timestamps[<span class="hljs-number">0</span>], timestamps[<span class="hljs-number">1</span>]).toMillis() + <span class="hljs-string">"ms"</span>);
+        System.out.println(<span class="hljs-string">"查询询价数据耗时: "</span> + Duration.between(timestamps[<span class="hljs-number">1</span>], timestamps[<span class="hljs-number">2</span>]).toMillis() + <span class="hljs-string">"ms"</span>);
+        System.out.println(<span class="hljs-string">"串行处理耗时: "</span> + Duration.between(timestamps[<span class="hljs-number">3</span>], timestamps[<span class="hljs-number">4</span>]).toMillis() + <span class="hljs-string">"ms"</span>);
+        System.out.println(<span class="hljs-string">"并行处理耗时: "</span> + Duration.between(timestamps[<span class="hljs-number">5</span>], timestamps[<span class="hljs-number">6</span>]).toMillis() + <span class="hljs-string">"ms"</span>);
+        System.out.println(<span class="hljs-string">"总耗时: "</span> + Duration.between(timestamps[<span class="hljs-number">0</span>], timestamps[<span class="hljs-number">6</span>]).toMillis() + <span class="hljs-string">"ms"</span>);
+    }
+
+}
+</code></pre>
+<p>验证结果一致性</p>
+<pre><code class="lang-java"><span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">validateResults</span><span class="hljs-params">(List&lt;DataModels.AssetData&gt; serialResult,
+                                   List&lt;DataModels.AssetData&gt; parallelResult)</span> {
+   <span class="hljs-comment">// 先比较整体大小</span>
+   <span class="hljs-keyword">if</span> (serialResult.size() != parallelResult.size()) {
+       System.err.println(<span class="hljs-string">"结果数量不一致：串行="</span> + serialResult.size()
+               + <span class="hljs-string">", 并行="</span> + parallelResult.size());
+       <span class="hljs-keyword">return</span>;
+   }
+
+   <span class="hljs-comment">// 逐个资产比较</span>
+   <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; serialResult.size(); i++) {
+       DataModels.<span class="hljs-type">AssetData</span> <span class="hljs-variable">serial</span> <span class="hljs-operator">=</span> serialResult.get(i);
+       DataModels.<span class="hljs-type">AssetData</span> <span class="hljs-variable">parallel</span> <span class="hljs-operator">=</span> parallelResult.get(i);
+
+       <span class="hljs-comment">// 比较资产码</span>
+       <span class="hljs-keyword">if</span> (!serial.getAssetCode().equals(parallel.getAssetCode())) {
+           System.err.println(<span class="hljs-string">"资产"</span> + i + <span class="hljs-string">"不一致"</span>);
+           <span class="hljs-keyword">return</span>;
+       }
+
+       <span class="hljs-comment">// 比较期限</span>
+       List&lt;DataModels.TermData&gt; serialTerms = serial.getTerms();
+       List&lt;DataModels.TermData&gt; parallelTerms = parallel.getTerms();
+       <span class="hljs-keyword">if</span> (serialTerms.size() != parallelTerms.size()) {
+           System.err.println(<span class="hljs-string">"资产"</span> + serial.getAssetCode() + <span class="hljs-string">"的期限数量不一致"</span>);
+           <span class="hljs-keyword">return</span>;
+       }
+
+       <span class="hljs-comment">// 比较每个期限下的结构</span>
+       <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; j &lt; serialTerms.size(); j++) {
+           DataModels.<span class="hljs-type">TermData</span> <span class="hljs-variable">serialTerm</span> <span class="hljs-operator">=</span> serialTerms.get(j);
+           DataModels.<span class="hljs-type">TermData</span> <span class="hljs-variable">parallelTerm</span> <span class="hljs-operator">=</span> parallelTerms.get(j);
+
+           <span class="hljs-keyword">if</span> (serialTerm.getTerm() != parallelTerm.getTerm()) {
+               System.err.println(<span class="hljs-string">"资产"</span> + serial.getAssetCode() + <span class="hljs-string">"期限值不一致"</span>);
+               <span class="hljs-keyword">return</span>;
+           }
+
+           List&lt;DataModels.StructureData&gt; serialStructures = serialTerm.getStructures();
+           List&lt;DataModels.StructureData&gt; parallelStructures = parallelTerm.getStructures();
+
+           <span class="hljs-keyword">if</span> (serialStructures.size() != parallelStructures.size()) {
+               System.err.println(<span class="hljs-string">"资产"</span> + serial.getAssetCode() + <span class="hljs-string">"期限"</span> + serialTerm.getTerm() + <span class="hljs-string">"的结构数量不一致"</span>);
+               <span class="hljs-keyword">return</span>;
+           }
+
+           <span class="hljs-comment">// 比较每个结构</span>
+           <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">k</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; k &lt; serialStructures.size(); k++) {
+               DataModels.<span class="hljs-type">StructureData</span> <span class="hljs-variable">serialStructure</span> <span class="hljs-operator">=</span> serialStructures.get(k);
+               DataModels.<span class="hljs-type">StructureData</span> <span class="hljs-variable">parallelStructure</span> <span class="hljs-operator">=</span> parallelStructures.get(k);
+
+               <span class="hljs-keyword">if</span> (!serialStructure.getStructureName().equals(parallelStructure.getStructureName())) {
+                   System.err.println(<span class="hljs-string">"资产"</span> + serial.getAssetCode() + <span class="hljs-string">"期限"</span> + serialTerm.getTerm() 
+                           + <span class="hljs-string">"结构"</span> + serialStructure.getStructureName() + <span class="hljs-string">"名称不一致"</span>);
+                   <span class="hljs-keyword">return</span>;
+               }
+
+               <span class="hljs-comment">// 比较询价数据</span>
+               List&lt;OptionInquiry&gt; serialInquiries = serialStructure.getInquiries();
+               List&lt;OptionInquiry&gt; parallelInquiries = parallelStructure.getInquiries();
+
+               <span class="hljs-keyword">if</span> (serialInquiries.size() != parallelInquiries.size()) {
+                   System.err.println(<span class="hljs-string">"资产"</span> + serial.getAssetCode() + <span class="hljs-string">"期限"</span> + serialTerm.getTerm() 
+                           + <span class="hljs-string">"结构"</span> + serialStructure.getStructureName() + <span class="hljs-string">"询价数量不一致"</span>);
+                   <span class="hljs-keyword">return</span>;
+               }
+
+               <span class="hljs-comment">// 比较每条询价数据</span>
+               <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">m</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; m &lt; serialInquiries.size(); m++) {
+                   <span class="hljs-type">OptionInquiry</span> <span class="hljs-variable">serialInquiry</span> <span class="hljs-operator">=</span> serialInquiries.get(m);
+                   <span class="hljs-type">OptionInquiry</span> <span class="hljs-variable">parallelInquiry</span> <span class="hljs-operator">=</span> parallelInquiries.get(m);
+
+                   <span class="hljs-keyword">if</span> (serialInquiry.getPrice() != parallelInquiry.getPrice()) {
+                       System.err.println(<span class="hljs-string">"资产"</span> + serial.getAssetCode() + <span class="hljs-string">"期限"</span> + serialTerm.getTerm() 
+                               + <span class="hljs-string">"结构"</span> + serialStructure.getStructureName() + <span class="hljs-string">"第"</span> + m + <span class="hljs-string">"条询价数据价格不一致"</span>);
+                       <span class="hljs-keyword">return</span>;
+                   }
+               }
+           }
+       }
+   }
+
+   System.out.println(<span class="hljs-string">"验证通过：串行和并行处理结果完全一致"</span>);
+}
+</code></pre>
+<h3 id="32-构建测试依赖的数据">3.2 构建测试依赖的数据</h3>
+<p>为了使测试更接近真实场景，我们生成了具有一定规模和复杂度的测试数据。每个标的都有多个期限，每个期限下有多个结构，以模拟真实的业务场景。</p>
+<pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataGenerator</span> {
+    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> List&lt;String&gt; UNDERLYING_ASSETS = Arrays.asList(
+            <span class="hljs-string">"600000.SH"</span>, <span class="hljs-string">"600036.SH"</span>, <span class="hljs-string">"601318.SH"</span>, <span class="hljs-string">"601398.SH"</span>, <span class="hljs-string">"601988.SH"</span>,
+            <span class="hljs-string">"000001.SZ"</span>, <span class="hljs-string">"000651.SZ"</span>, <span class="hljs-string">"000858.SZ"</span>, <span class="hljs-string">"600519.SH"</span>, <span class="hljs-string">"601166.SH"</span>
+    );
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> List&lt;String&gt; <span class="hljs-title function_">getUnderlyingAssets</span><span class="hljs-params">()</span> {
+        <span class="hljs-keyword">return</span> UNDERLYING_ASSETS;
+    }
+
+    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> List&lt;OptionInquiry&gt; <span class="hljs-title function_">generateTestData</span><span class="hljs-params">()</span> {
+        List&lt;OptionInquiry&gt; inquiries = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();
+        <span class="hljs-type">Random</span> <span class="hljs-variable">random</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>();
+
+        <span class="hljs-keyword">for</span> (String asset : UNDERLYING_ASSETS) {
+            <span class="hljs-type">int</span> <span class="hljs-variable">eachLevelSize</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>;
+            <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">term</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; term &lt;= eachLevelSize; term++) {
+                <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">structureId</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; structureId &lt;= eachLevelSize; structureId++) {
+                    <span class="hljs-comment">// 假设每个维度（标的、期限、结构）有十个报价</span>
+                    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) {
+                        <span class="hljs-type">String</span> <span class="hljs-variable">structure</span> <span class="hljs-operator">=</span> <span class="hljs-string">"Structure"</span> + structureId;
+                        <span class="hljs-type">double</span> <span class="hljs-variable">price</span> <span class="hljs-operator">=</span> <span class="hljs-number">100</span> + random.nextDouble() * <span class="hljs-number">100</span>;
+                        inquiries.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">OptionInquiry</span>(asset, term, structure, price));
+                    }
+                }
+            }
+        }
+        <span class="hljs-keyword">return</span> inquiries;
+    }
+}
+</code></pre>
+<h3 id="33-测试结果">3.3 测试结果</h3>
+<p>在处理10,000条数据时，性能提升8倍左右，控制台打印结果：</p>
+<pre><code>获取标的列表: 10个标的
+查询到询价数据: 10000条
+
+处理完成，统计信息：
+获取标的列表耗时: 9ms
+查询询价数据耗时: 37ms
+串行处理耗时: 1661ms
+并行处理耗时: 237ms
+总耗时: 1970ms
+验证通过：串行和并行处理结果一致
+</code></pre><h2 id="四、结论">四、结论</h2>
+<p>通过使用ForkJoin框架，成功将处理时间从1.6秒优化到了0.2秒，性能提升显著。</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="Work-Solution-Introduction.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 工作-问题处理">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"ForkJoin提升查询性能","level":"1.4.1","depth":2,"previous":{"title":"工作-问题处理","level":"1.4","depth":1,"path":"Work/Work-Solution-Introduction.md","ref":"Work/Work-Solution-Introduction.md","articles":[{"title":"ForkJoin提升查询性能","level":"1.4.1","depth":2,"path":"Work/ForkJoin提升查询性能.md","ref":"Work/ForkJoin提升查询性能.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":[],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Your Name","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"MIT 6.824 学习笔记","gitbook":"*"},"file":{"path":"Work/ForkJoin提升查询性能.md","mtime":"2024-10-27T09:12:01.667Z","type":"markdown"},"gitbook":{"version":"6.0.2","time":"2024-10-27T09:12:08.892Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <noscript>
+        <style>
+            .honkit-cloak {
+                display: block !important;
+            }
+        </style>
+    </noscript>
+    <script>
+        // Restore sidebar state as critical path for prevent layout shift
+        function __init__getSidebarState(defaultValue){
+            var baseKey = "";
+            var key = baseKey + ":sidebar";
+            try {
+                var value = localStorage[key];
+                if (value === undefined) {
+                    return defaultValue;
+                }
+                var parsed = JSON.parse(value);
+                return parsed == null ? defaultValue : parsed;
+            } catch (e) {
+                return defaultValue;
+            }
+        }
+        function __init__restoreLastSidebarState() {
+            var isMobile = window.matchMedia("(max-width: 600px)").matches;
+            if (isMobile) {
+                // Init last state if not mobile
+                return;
+            }
+            var sidebarState = __init__getSidebarState(true);
+            var book = document.querySelector(".book");
+            // Show sidebar if it enabled
+            if (sidebarState && book) {
+                book.classList.add("without-animation", "with-summary");
+            }
+        }
+
+        try {
+            __init__restoreLastSidebarState();
+        } finally {
+            var book = document.querySelector(".book");
+            book.classList.remove("honkit-cloak");
+        }
+    </script>
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/@honkit/honkit-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
