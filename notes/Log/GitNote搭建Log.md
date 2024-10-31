@@ -136,7 +136,7 @@ honkit install
 
 3. 重启服务：
 ```bash
-honkit serve
+ honkit serve
 ```
 
 主要插件说明：
