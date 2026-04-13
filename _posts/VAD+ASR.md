@@ -1,3 +1,19 @@
+---
+layout:       post
+title:        "VAD + ASR：浏览器端实时语音识别方案解析"
+subtitle:     "基于 WebAssembly + sherpa-onnx 的离线语音识别实现"
+date:         2024-09-01 12:00:00
+author:       "Chaoxu"
+header-img:   "img/post-bg-2015.jpg"
+header-mask:  0.3
+catalog:      true
+tags:
+    - 技术
+    - ASR
+    - WebAssembly
+    - AI
+---
+
 开箱即用
 官方仓库
 

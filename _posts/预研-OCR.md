@@ -1,3 +1,18 @@
+---
+layout:       post
+title:        "OCR 预研：替换检测模型与踩坑记录"
+subtitle:     "PP-OCRv5 模型转换、Node.js 后处理限制及解决方案"
+date:         2024-08-01 12:00:00
+author:       "Chaoxu"
+header-img:   "img/post-bg-2015.jpg"
+header-mask:  0.3
+catalog:      true
+tags:
+    - 技术
+    - OCR
+    - AI
+---
+
 参数调整
 [https://www.npmjs.com/package/@gutenye/ocr-node](https://www.npmjs.com/package/@gutenye/ocr-node)
 
