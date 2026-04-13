@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="这里是 @Chaoxu超旭 的个人博客">
+    <meta name="keywords" content="Chaoxu">
+    <meta name="theme-color" content="#000000">
+
+    <!-- Open Graph -->
+    <meta property="og:title"
+        content="Hello 2024, Hello 30, Hello Blog - 超旭的博客 | Chaoxu Blog">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="
+">
+    
+    <meta property="article:published_time" content=" 2024-05-22T17:42:00Z">
+    
+    
+    <meta property="article:author" content="Chaoxu">
+    
+    
+    <meta property="article:tag" content="En">
+    
+    
+    <meta property="og:image" content="https://Chaoxuzhong.github.iohttps://github.com/Huxpro.png">
+    <meta property="og:url" content="https://Chaoxuzhong.github.io/2024/05/22/hello/">
+    <meta property="og:site_name" content="超旭的博客 | Chaoxu Blog">
+
+    <title>Hello 2024, Hello 30, Hello Blog - 超旭的博客 | Chaoxu Blog</title>
+
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="/pwa/manifest.json">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://Chaoxuzhong.github.io/2024/05/22/hello/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href=" /css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href=" /css/hux-blog.min.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+        type="text/css">
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!-- Google AdSense -->
+    <script data-ad-client="ca-pub-6487568398225121" async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Chaoxu Blog</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div id="huxblog_navbar">
+                <div class="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="/archive/">Archive</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li class="search-icon">
+                            <a href="javascript:void(0)">
+                                <i class="fa fa-search"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <script>
+        // Drop Bootstarp low-performance Navbar
+        // Use customize navbar with high-quality material design animation
+        // in high-perf jank-free CSS3 implementation
+        var $body = document.body;
+        var $toggle = document.querySelector('.navbar-toggle');
+        var $navbar = document.querySelector('#huxblog_navbar');
+        var $collapse = document.querySelector('.navbar-collapse');
+
+        var __HuxNav__ = {
+            close: function () {
+                $navbar.className = " ";
+                // wait until animation end.
+                setTimeout(function () {
+                    // prevent frequently toggle
+                    if ($navbar.className.indexOf('in') < 0) {
+                        $collapse.style.height = "0px"
+                    }
+                }, 400)
+            },
+            open: function () {
+                $collapse.style.height = "auto"
+                $navbar.className += " in";
+            }
+        }
+
+        // Bind Event
+        $toggle.addEventListener('click', function (e) {
+            if ($navbar.className.indexOf('in') > 0) {
+                __HuxNav__.close()
+            } else {
+                __HuxNav__.open()
+            }
+        })
+
+        /**
+         * Since Fastclick is used to delegate 'touchstart' globally
+         * to hack 300ms delay in iOS by performing a fake 'click',
+         * Using 'e.stopPropagation' to stop 'touchstart' event from 
+         * $toggle/$collapse will break global delegation.
+         * 
+         * Instead, we use a 'e.target' filter to prevent handler
+         * added to document close HuxNav.  
+         *
+         * Also, we use 'click' instead of 'touchstart' as compromise
+         */
+        document.addEventListener('click', function (e) {
+            if (e.target == $toggle) return;
+            if (e.target.className == 'icon-bar') return;
+            __HuxNav__.close();
+        })
+    </script>
+    <!-- Search -->
+<div class="search-page">
+  <div class="search-icon-close-container">
+    <span class="search-icon-close">
+      <i class="fa fa-chevron-down"></i>
+    </span>
+  </div>
+  <div class="search-main container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <form></form>
+        <input type="text" id="search-input" placeholder="$ grep...">
+        </form>
+        <div id="search-results" class="mini-post-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/in-post/post-bg-2024-helloblog.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+
+
+
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/in-post/post-bg-2024-helloblog.jpg');
+        background: ;
+    }
+
+    
+    header.intro-header .header-mask{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background: rgba(0,0,0, 0.3);
+    }
+    
+</style>
+
+
+
+
+<header class="intro-header" >
+
+    <div class="header-mask"></div>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/archive/?tag=En" title="En">En</a>
+                        
+                    </div>
+                    <h1>Hello 2024, Hello 30, Hello Blog</h1>
+                    
+                    <h2 class="subheading">你好 2024， 你好 30， 你好 博客</h2>
+                    <span class="meta">Posted by Chaoxu on May 22, 2024</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+
+
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <!-- Multi-Lingual -->
+                
+                                    <!-- Language Selector -->
+                <select class="sel-lang" onchange= "onLanChange(this.options[this.options.selectedIndex].value)">
+                    <option value="0"> 中文 | Chinese </option>
+                    <option value="1" selected> 英文 | English </option>
+                </select>
+
+
+                
+
+				<!-- Chinese Version -->
+
+<div class="zh post-container">
+    
+    <p>最近有一股强烈的欲望想找个地方写点东西，主要是为了在学习过程中多输出，输出倒逼输入，拒绝似懂非懂。一直记得搭建过博客但从未使用，今天发现已时隔五年之久。</p>
+
+<p>前两天刚过完30岁生日，所以脑中常闪过：“一事无成，一事无成！”，这不，距第一次把个人博客搭建好已经过了五年，就不免在想，时间都去哪了。</p>
+
+<p>当然，脑子里面还有另一个声音在反驳，是之前在Youtube上看到有人在30岁博士毕业后，选择先去做两年义工。</p>
+
+<p>在把我自己和他对比后，我很震惊，因为我永远觉得挣钱要紧嘛，没有积蓄我是真的恐慌和焦虑，仿佛无处可逃。我惊叹于他的不匮乏和内心的满足，同时我一直想寻到自己内心动机，并跟随它，因为我甚至都不知道我为什么会发出“一事无成”的感叹，它就是会在我觉得时间紧迫的关头出现在我的脑海，如30岁生日，如发现博客夭折竟已五年。当我剖析“一事无成”时，我对于那些“成”内心又不是完全认同的，所以我拧巴，我涉嫌自我欺骗。</p>
+
+<p>总之，我需要文字，需要记录，如嫌疑人需要罪证。当然，我最需要的其实是放松，放松下来，留下点蛛丝马迹就行。</p>
+
+<h3 id="致谢">致谢</h3>
+
+<p>感谢开源，感谢<a href="https://github.com/huxpro/huxpro.github.io">黄玄的博客模板</a>，即改即用。</p>
+
+
+</div>
+
+<!-- English Version -->
+
+<div class="en post-container">
+    
+    <p>Recently, I felt a strong urge to find a place to write down my thoughts, primarily to enhance my learning process
+through active output. Output compels input, and I refuse to settle for a superficial understanding. I remember setting
+up a blog years ago but never actually using it. Today, I realized it has been five years since then.</p>
+
+<p>Just two days after celebrating my 30th birthday, a recurring thought haunts me: “You have achieved nothing.” Time has
+flown by—it has already been five years since I first set up my blog, and I often wonder, “Where has all the time gone?”</p>
+
+<p>There’s another voice in my head, one that contrasts sharply with my own. It belongs to someone I saw on YouTube who,
+after earning their Ph.D. at 30, chose to spend two years doing volunteer work.</p>
+
+<p>I was shocked when I compared myself to him. I’ve always prioritized making money because the lack of savings truly
+panics me, making me feel trapped. I marveled at his lack of scarcity and his inner contentment. Meanwhile, I am on a
+quest to discover my own inner motivations and follow them, even though I don’t fully understand why I often lament, “
+You have achieved nothing.” These thoughts emerge whenever I feel pressured by time, like on my 30th birthday or when I
+realize it’s been five years since my blog was active. When I analyze this feeling of unachievement, I realize I don’t
+wholly embrace what ‘achievement’ typically means; hence, I am conflicted and suspect I might be deceiving myself.</p>
+
+<p>In summary, I need words, I need to document thoughts, as a suspect needs evidence. Most of all, I need to relax—just
+relax, leave a few traces.</p>
+
+<h3 id="thanks">Thanks</h3>
+
+<p>Thanks to open source, and thanks to <a href="https://github.com/huxpro/huxpro.github.io">HuxBlog Boilerplate</a>, which I used
+immediately after some modifications.</p>
+
+<p><strong>Note</strong>: The English content below represents an ongoing record of my improvements in learning English. The display of
+historical versions aims to document my learning progress. Thank you for your understanding and support.</p>
+<details class="detail-content">
+  <summary class="detail-content-summary">Version01-240521-21:29</summary>
+  <p>Suddenly, Want to find a place to wirte something down, primary for do some output when study, output put make input more efficently,refuse know half about something. I remember I had build a blog before, but I never use it, today I found it's been five years long.
+  </p>
+  <p>
+  I had celebrated my 30 years old birthday two days ago, so there always flash some voice said   "your are not success" in my mind. at the same time , the time from the first time I build my blog to now already 5 years, I always thinging "where the time goes?".
+  </p>
+  <p>
+    Ofcourse there is another voice fight in my mind,is a preson go to do 义工 for two years after he get his 博士 degree.
+  </p>
+  <p>Compareing myself with this man , I was shocked. Because I always think earn money is the most priority thing, no money exist in my hand alwalys makes me anxious and pandamic, It seems like I have nowhere to runaway. I was shocked because he is not kuifa,and is a filled with person. At the sametime, I always to find out my inner motivation, and follow them, because I even don't know why I always think about "I haven't successed in nothing", they just pop out when I feel the time is not enough just like my 30 year old's birthday or turn out that I haven't wirte any blog since I built it 5 years ago.when I anaylis this voice, I am not agree with those "success", so I am ningba, I am suspect in cheating myself. 
+  </p>
+  <p>
+      Summary,I need the word write down, I need some record just like the suspect need evidence. Surely yes, what I most needed is easy on me , just easy ,just relax and leave some zhusimaji.
+  </p>
+</details>
+
+<details class="detail-content">
+  <summary class="detail-content-summary">Version02-240525-18:23</summary>
+  <p>Recently, I felt a strong urge to wirte down my thought, primarily to enhance my learning progress through output, output conpels input, refuse settle for superficial understanding.I always remember setting up a blog years ago but never actully use it.Today, I realize it has been five years since then.
+  </p>
+  <p>
+ Just two days after celebrating my 30 years old birthday, a recurring thought haunt me:"You have achieved nothing".Time has flown by-is has been five years since I first set up my blog, and I often wonder，”where has all the time gone?"
+  </p>
+  <p>
+   There's another voice in my head,one that contracts sharply with my own. It's belong to some one I see in YouTube who, after earing his PH.D at 30, chose to spend two years doing volunteet works.
+  </p>
+  <p>I was shocked when I compared myself to him.I've always prioritized making money because the lack of saving truly panics me, making me feel trapped.I marveled at his lack of scarcity and his inner contentment. Meanwhile,,I am on a quest to discover my own inner motivations and follow them, even though I don't know why I always lament :"you have achieved nothing".  These thoughts emerge whenever I felt pressured by time.like on my 30's birthday or when I realize it's have been five years since my blog was active.  when I analyze this meaning of unchievement, I realized I am not wholly embrace what 'achievement' typicaly means; hence, I am conflicted and suspect I might be deceiving meself.
+  </p>
+  <p>
+     In summary, I need words, I need to document thoughts, as a suspect need evidence. Most of all, I need to relax-just relax ,leave a few traces.
+  </p>
+</details>
+
+
+</div>
+
+
+                <hr style="visibility: hidden;">
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2024/05/23/Note-Trade-Summary/" data-toggle="tooltip" data-placement="top" title="Trade Summary">
+                        Next<br>
+                        <span>Trade Summary</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+                <hr style="visibility: hidden;">
+
+<!--                -->
+<!--                &lt;!&ndash; disqus 评论框 start &ndash;&gt;-->
+<!--                <div class="comment">-->
+<!--                    <div id="disqus_thread" class="disqus-thread"></div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash; disqus 评论框 end &ndash;&gt;-->
+<!--                -->
+
+<!--                -->
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+
+
+<section>
+    
+        <hr class="hidden-sm hidden-xs">
+    
+    <h5><a href="/archive/">FEATURED TAGS</a></h5>
+    <div class="tags">
+        
+        
+        
+        
+        
+        
+                <a data-sort="0000" 
+                    href="/archive/?tag=En"
+                    title="En"
+                    rel="2">En</a>
+        
+                <a data-sort="0001" 
+                    href="/archive/?tag=%E7%AC%94%E8%AE%B0"
+                    title="笔记"
+                    rel="1">笔记</a>
+    </div>
+</section>
+
+
+                <!-- Friends Blog -->
+                
+<hr>
+<h5>FRIENDS</h5>
+<ul class="list-inline">
+  
+</ul>
+
+            </div>
+        </div>
+    </div>
+</article>
+
+<!-- add support for mathjax by voleking-->
+
+
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "Chaoxu";
+    var disqus_identifier = "/2024/05/22/hello";
+    var disqus_url = "https://Chaoxuzhong.github.io/2024/05/22/hello/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'right',
+          // icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <!-- SNS Link -->
+                
+
+
+<ul class="list-inline text-center">
+
+
+  
+  
+  
+  
+  
+  
+  
+</ul>
+
+                <p class="copyright text-muted">
+                    Copyright &copy; Chaoxu Blog 2026
+                    <br>
+                    Powered by <a href="http://huangxuan.me">Hux Blog</a> |
+                    <iframe style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0" width="100px"
+                        height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- Currently, only navbar scroll-down effect at desktop still depends on this -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+<!-- Simple Jekyll Search -->
+<script src="/js/simple-jekyll-search.min.js"></script>
+
+<!-- Service Worker -->
+
+<script src="/js/snackbar.js "></script>
+<script src="/js/sw-registration.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+        var d = document, t = 'script',
+            o = d.createElement(t),
+            s = d.getElementsByTagName(t)[0];
+        o.src = u;
+        if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+        s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!--
+     Because of the native support for backtick-style fenced code blocks
+     right within the Markdown is landed in Github Pages,
+     From V1.6, There is no need for Highlight.js,
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+
+
+
+
+
+<!--fastClick.js -->
+<script>
+    async("//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js", function () {
+        var $nav = document.querySelector("nav");
+        if ($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'Chaoxuzhong.github.io';
+
+    // Originial
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog(selector) {
+
+        // interop with multilangual 
+        if ('true' == 'true') {
+            _containerSelector = 'div.post-container.active'
+        } else {
+            _containerSelector = 'div.post-container'
+        }
+
+        // init
+        var P = $(_containerSelector), a, n, t, l, i, c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+
+        // clean
+        $(selector).html('')
+
+        // appending
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#" + $(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="' + i + '" rel="nofollow">' + t + '</a>');
+            l = $('<li class="' + n + '_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function (e) {
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+<!-- Multi-Lingual -->
+
+<!-- Handle Language Change -->
+<script type="text/javascript">
+    // get nodes
+    var $zh = document.querySelector(".zh");
+    var $en = document.querySelector(".en");
+    var $select = document.querySelector("select");
+
+    // Changes at v1.8.1: include lang flag as a url query. This interop well with catalog hash anchors.
+    function getLang() { return new URLSearchParams(document.location.search).get("lang") }
+
+    function setLang(newLang) {
+        var params = new URLSearchParams(document.location.search)
+        params.set("lang", newLang)
+        document.location.search = params.toString()  // refresh.
+    }
+
+    // handle render
+    function _render() {
+        var lang = getLang()
+        // en
+        if (lang == "en") {
+            $select.selectedIndex = 1;
+            $en.style.display = "block";
+            $en.classList.add("active");
+            $zh.style.display = "none";
+            $zh.classList.remove("active");
+            // default to zh-cn
+        } else {
+            $select.selectedIndex = 0;
+            $zh.style.display = "block";
+            $zh.classList.add("active");
+            $en.style.display = "none";
+            $en.classList.remove("active");
+        }
+        // interop with catalog 
+        generateCatalog(".catalog-body");
+    }
+
+    // handle select change
+    function onLanChange(index) {
+        if (index == 0) {
+            lang = "zh"
+        } else {
+            lang = "en"
+        }
+        setLang(lang)
+    }
+
+    // init
+    _render();
+</script>
+
+
+<!-- Simple Jekyll Search -->
+<script>
+    // https://stackoverflow.com/questions/1912501/unescape-html-entities-in-javascript
+    function htmlDecode(input) {
+        var e = document.createElement('textarea');
+        e.innerHTML = input;
+        // handle case of empty input
+        return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+    }
+
+    SimpleJekyllSearch({
+        searchInput: document.getElementById('search-input'),
+        resultsContainer: document.getElementById('search-results'),
+        json: '/search.json',
+        searchResultTemplate: '<div class="post-preview item"><a href="{url}"><h2 class="post-title">{title}</h2><h3 class="post-subtitle">{subtitle}</h3><hr></a></div>',
+        noResultsText: 'No results',
+        limit: 50,
+        fuzzy: false,
+        // a hack to get escaped subtitle unescaped. for some reason, 
+        // post.subtitle w/o escape filter nuke entire search.
+        templateMiddleware: function (prop, value, template) {
+            if (prop === 'subtitle' || prop === 'title') {
+                if (value.indexOf("code")) {
+                    return htmlDecode(value);
+                } else {
+                    return value;
+                }
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        var $searchPage = $('.search-page');
+        var $searchOpen = $('.search-icon');
+        var $searchClose = $('.search-icon-close');
+        var $searchInput = $('#search-input');
+        var $body = $('body');
+
+        $searchOpen.on('click', function (e) {
+            e.preventDefault();
+            $searchPage.toggleClass('search-active');
+            var prevClasses = $body.attr('class') || '';
+            setTimeout(function () {
+                $body.addClass('no-scroll');
+            }, 400)
+
+            if ($searchPage.hasClass('search-active')) {
+                $searchClose.on('click', function (e) {
+                    e.preventDefault();
+                    $searchPage.removeClass('search-active');
+                    $body.attr('class', prevClasses);  // from closure 
+                });
+                $searchInput.focus();
+            }
+        });
+    });
+</script>
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

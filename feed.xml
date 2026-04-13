@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Chaoxu Blog</title>
+    <description>这里是 @Chaoxu超旭 的个人博客</description>
+    <link>https://Chaoxuzhong.github.io/</link>
+    <atom:link href="https://Chaoxuzhong.github.io/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Mon, 13 Apr 2026 03:49:00 +0000</pubDate>
+    <lastBuildDate>Mon, 13 Apr 2026 03:49:00 +0000</lastBuildDate>
+    <generator>Jekyll v4.3.3</generator>
+    
+      <item>
+        <title>Trade Summary</title>
+        <description>&lt;h3 id=&quot;交易复盘笔记&quot;&gt;交易复盘笔记&lt;/h3&gt;
+
+&lt;h4 id=&quot;2024-05-29&quot;&gt;2024-05-29&lt;/h4&gt;
+&lt;details class=&quot;detail-content&quot;&gt;
+  &lt;summary class=&quot;detail-content-summary&quot;&gt;点击展开复盘详情&lt;/summary&gt;
+  &lt;ol&gt;
+    &lt;li&gt;USDC持续流程&lt;/li&gt;
+    &lt;img src=&quot;/img/in-post/post-trade/240527BTC_1D.png&quot; /&gt;
+    &lt;li&gt;ETH:合约持仓量在上涨，小碎步开始网上攻，不能放量，不能回调&lt;/li&gt;
+    &lt;img src=&quot;/img/in-post/post-trade/240527ETH_4H.png&quot; /&gt;
+    &lt;img src=&quot;/img/in-post/post-trade/240527ETH_30MHOLD.png&quot; /&gt;
+    &lt;li&gt;Doge：做日线均线多头，横盘慢慢买&lt;/li&gt;
+    &lt;img src=&quot;/img/in-post/post-trade/20240527DOGE_6H.png&quot; /&gt;
+    &lt;li&gt;Arb：四小时级别一直放量，可能又一波回补&lt;/li&gt;
+    &lt;img src=&quot;/img/in-post/post-trade/240527ARB_4H.png&quot; /&gt;
+  &lt;/ol&gt;
+
+&lt;/details&gt;
+
+&lt;h4 id=&quot;2024-05-27&quot;&gt;2024-05-27&lt;/h4&gt;
+&lt;details class=&quot;detail-content&quot;&gt;
+  &lt;summary class=&quot;detail-content-summary&quot;&gt;点击展开复盘详情&lt;/summary&gt;
+  &lt;h4&gt;技术分析&lt;/h4&gt;
+  &lt;ol&gt;
+    &lt;li&gt;短期不再具有大牛的条件，时间周期不是很够，还要考虑到M顶的可能，但是合约持仓量没怎么减，短期暴跌的可能性低&lt;/li&gt;
+    &lt;img src=&quot;/img/in-post/post-trade/240527BTC_1D.png&quot; /&gt;
+    &lt;li&gt;ETH:合约持仓量在上涨，小碎步开始网上攻，不能放量，不能回调&lt;/li&gt;
+    &lt;img src=&quot;/img/in-post/post-trade/240527ETH_4H.png&quot; /&gt;
+    &lt;img src=&quot;/img/in-post/post-trade/240527ETH_30MHOLD.png&quot; /&gt;
+    &lt;li&gt;Doge：做日线均线多头，横盘慢慢买&lt;/li&gt;
+    &lt;img src=&quot;/img/in-post/post-trade/20240527DOGE_6H.png&quot; /&gt;
+    &lt;li&gt;Arb：四小时级别一直放量，可能又一波回补&lt;/li&gt;
+    &lt;img src=&quot;/img/in-post/post-trade/240527ARB_4H.png&quot; /&gt;
+  &lt;/ol&gt;
+
+&lt;/details&gt;
+
+</description>
+        <pubDate>Thu, 23 May 2024 13:09:00 +0000</pubDate>
+        <link>https://Chaoxuzhong.github.io/2024/05/23/Note-Trade-Summary/</link>
+        <guid isPermaLink="true">https://Chaoxuzhong.github.io/2024/05/23/Note-Trade-Summary/</guid>
+        
+        <category>En</category>
+        
+        <category>笔记</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>Hello 2024, Hello 30, Hello Blog</title>
+        <description>&lt;!-- Chinese Version --&gt;
+
+&lt;div class=&quot;zh post-container&quot;&gt;
+    
+    &lt;p&gt;最近有一股强烈的欲望想找个地方写点东西，主要是为了在学习过程中多输出，输出倒逼输入，拒绝似懂非懂。一直记得搭建过博客但从未使用，今天发现已时隔五年之久。&lt;/p&gt;
+
+&lt;p&gt;前两天刚过完30岁生日，所以脑中常闪过：“一事无成，一事无成！”，这不，距第一次把个人博客搭建好已经过了五年，就不免在想，时间都去哪了。&lt;/p&gt;
+
+&lt;p&gt;当然，脑子里面还有另一个声音在反驳，是之前在Youtube上看到有人在30岁博士毕业后，选择先去做两年义工。&lt;/p&gt;
+
+&lt;p&gt;在把我自己和他对比后，我很震惊，因为我永远觉得挣钱要紧嘛，没有积蓄我是真的恐慌和焦虑，仿佛无处可逃。我惊叹于他的不匮乏和内心的满足，同时我一直想寻到自己内心动机，并跟随它，因为我甚至都不知道我为什么会发出“一事无成”的感叹，它就是会在我觉得时间紧迫的关头出现在我的脑海，如30岁生日，如发现博客夭折竟已五年。当我剖析“一事无成”时，我对于那些“成”内心又不是完全认同的，所以我拧巴，我涉嫌自我欺骗。&lt;/p&gt;
+
+&lt;p&gt;总之，我需要文字，需要记录，如嫌疑人需要罪证。当然，我最需要的其实是放松，放松下来，留下点蛛丝马迹就行。&lt;/p&gt;
+
+&lt;h3 id=&quot;致谢&quot;&gt;致谢&lt;/h3&gt;
+
+&lt;p&gt;感谢开源，感谢&lt;a href=&quot;https://github.com/huxpro/huxpro.github.io&quot;&gt;黄玄的博客模板&lt;/a&gt;，即改即用。&lt;/p&gt;
+
+
+&lt;/div&gt;
+
+&lt;!-- English Version --&gt;
+
+&lt;div class=&quot;en post-container&quot;&gt;
+    
+    &lt;p&gt;Recently, I felt a strong urge to find a place to write down my thoughts, primarily to enhance my learning process
+through active output. Output compels input, and I refuse to settle for a superficial understanding. I remember setting
+up a blog years ago but never actually using it. Today, I realized it has been five years since then.&lt;/p&gt;
+
+&lt;p&gt;Just two days after celebrating my 30th birthday, a recurring thought haunts me: “You have achieved nothing.” Time has
+flown by—it has already been five years since I first set up my blog, and I often wonder, “Where has all the time gone?”&lt;/p&gt;
+
+&lt;p&gt;There’s another voice in my head, one that contrasts sharply with my own. It belongs to someone I saw on YouTube who,
+after earning their Ph.D. at 30, chose to spend two years doing volunteer work.&lt;/p&gt;
+
+&lt;p&gt;I was shocked when I compared myself to him. I’ve always prioritized making money because the lack of savings truly
+panics me, making me feel trapped. I marveled at his lack of scarcity and his inner contentment. Meanwhile, I am on a
+quest to discover my own inner motivations and follow them, even though I don’t fully understand why I often lament, “
+You have achieved nothing.” These thoughts emerge whenever I feel pressured by time, like on my 30th birthday or when I
+realize it’s been five years since my blog was active. When I analyze this feeling of unachievement, I realize I don’t
+wholly embrace what ‘achievement’ typically means; hence, I am conflicted and suspect I might be deceiving myself.&lt;/p&gt;
+
+&lt;p&gt;In summary, I need words, I need to document thoughts, as a suspect needs evidence. Most of all, I need to relax—just
+relax, leave a few traces.&lt;/p&gt;
+
+&lt;h3 id=&quot;thanks&quot;&gt;Thanks&lt;/h3&gt;
+
+&lt;p&gt;Thanks to open source, and thanks to &lt;a href=&quot;https://github.com/huxpro/huxpro.github.io&quot;&gt;HuxBlog Boilerplate&lt;/a&gt;, which I used
+immediately after some modifications.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: The English content below represents an ongoing record of my improvements in learning English. The display of
+historical versions aims to document my learning progress. Thank you for your understanding and support.&lt;/p&gt;
+&lt;details class=&quot;detail-content&quot;&gt;
+  &lt;summary class=&quot;detail-content-summary&quot;&gt;Version01-240521-21:29&lt;/summary&gt;
+  &lt;p&gt;Suddenly, Want to find a place to wirte something down, primary for do some output when study, output put make input more efficently,refuse know half about something. I remember I had build a blog before, but I never use it, today I found it&apos;s been five years long.
+  &lt;/p&gt;
+  &lt;p&gt;
+  I had celebrated my 30 years old birthday two days ago, so there always flash some voice said   &quot;your are not success&quot; in my mind. at the same time , the time from the first time I build my blog to now already 5 years, I always thinging &quot;where the time goes?&quot;.
+  &lt;/p&gt;
+  &lt;p&gt;
+    Ofcourse there is another voice fight in my mind,is a preson go to do 义工 for two years after he get his 博士 degree.
+  &lt;/p&gt;
+  &lt;p&gt;Compareing myself with this man , I was shocked. Because I always think earn money is the most priority thing, no money exist in my hand alwalys makes me anxious and pandamic, It seems like I have nowhere to runaway. I was shocked because he is not kuifa,and is a filled with person. At the sametime, I always to find out my inner motivation, and follow them, because I even don&apos;t know why I always think about &quot;I haven&apos;t successed in nothing&quot;, they just pop out when I feel the time is not enough just like my 30 year old&apos;s birthday or turn out that I haven&apos;t wirte any blog since I built it 5 years ago.when I anaylis this voice, I am not agree with those &quot;success&quot;, so I am ningba, I am suspect in cheating myself. 
+  &lt;/p&gt;
+  &lt;p&gt;
+      Summary,I need the word write down, I need some record just like the suspect need evidence. Surely yes, what I most needed is easy on me , just easy ,just relax and leave some zhusimaji.
+  &lt;/p&gt;
+&lt;/details&gt;
+
+&lt;details class=&quot;detail-content&quot;&gt;
+  &lt;summary class=&quot;detail-content-summary&quot;&gt;Version02-240525-18:23&lt;/summary&gt;
+  &lt;p&gt;Recently, I felt a strong urge to wirte down my thought, primarily to enhance my learning progress through output, output conpels input, refuse settle for superficial understanding.I always remember setting up a blog years ago but never actully use it.Today, I realize it has been five years since then.
+  &lt;/p&gt;
+  &lt;p&gt;
+ Just two days after celebrating my 30 years old birthday, a recurring thought haunt me:&quot;You have achieved nothing&quot;.Time has flown by-is has been five years since I first set up my blog, and I often wonder，”where has all the time gone?&quot;
+  &lt;/p&gt;
+  &lt;p&gt;
+   There&apos;s another voice in my head,one that contracts sharply with my own. It&apos;s belong to some one I see in YouTube who, after earing his PH.D at 30, chose to spend two years doing volunteet works.
+  &lt;/p&gt;
+  &lt;p&gt;I was shocked when I compared myself to him.I&apos;ve always prioritized making money because the lack of saving truly panics me, making me feel trapped.I marveled at his lack of scarcity and his inner contentment. Meanwhile,,I am on a quest to discover my own inner motivations and follow them, even though I don&apos;t know why I always lament :&quot;you have achieved nothing&quot;.  These thoughts emerge whenever I felt pressured by time.like on my 30&apos;s birthday or when I realize it&apos;s have been five years since my blog was active.  when I analyze this meaning of unchievement, I realized I am not wholly embrace what &apos;achievement&apos; typicaly means; hence, I am conflicted and suspect I might be deceiving meself.
+  &lt;/p&gt;
+  &lt;p&gt;
+     In summary, I need words, I need to document thoughts, as a suspect need evidence. Most of all, I need to relax-just relax ,leave a few traces.
+  &lt;/p&gt;
+&lt;/details&gt;
+
+
+&lt;/div&gt;
+</description>
+        <pubDate>Wed, 22 May 2024 17:42:00 +0000</pubDate>
+        <link>https://Chaoxuzhong.github.io/2024/05/22/hello/</link>
+        <guid isPermaLink="true">https://Chaoxuzhong.github.io/2024/05/22/hello/</guid>
+        
+        <category>En</category>
+        
+        
+      </item>
+    
+  </channel>
+</rss>
