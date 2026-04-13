@@ -24,8 +24,7 @@ class Solution {
         // 构建邻接表，处理重边自然合并到List中
         // Build adjacency list, parallel edges are naturally merged into the List
         for (int[] gItem : graph) {
-            graphMap.computeIfAbsent(gItem[0], k -> new ArrayList<Integer>())
-                   .add(gItem[1]);
+            graphMap.computeIfAbsent(gItem[0], k -> new ArrayList<Integer>()).add(gItem[1]);
         }
         
         // 初始化访问数组
