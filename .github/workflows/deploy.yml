@@ -1,4 +1,4 @@
-name: Deploy GitBook
+name: Deploy Site
 on:
   push:
     branches:
@@ -13,28 +13,36 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+
+      - name: Build Jekyll
+        run: bundle exec jekyll build
+        env:
+          JEKYLL_ENV: production
+
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
 
-      - name: Install and Build
+      - name: Build GitBook (honkit)
         run: |
           npm install -g honkit
           cd notes
           honkit build
 
-      # 新增：复制源文件
-      - name: Copy Source Files
+      - name: Merge notes into site
         run: |
-          mkdir -p temp/notes
-          cp -r notes/_book/* temp/notes/
-          cp notes/README.md notes/SUMMARY.md temp/notes/
+          rm -rf _site/notes
+          cp -r notes/_book _site/notes
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./temp/notes    # 改为发布临时目录
-          destination_dir: notes
+          publish_dir: ./_site
