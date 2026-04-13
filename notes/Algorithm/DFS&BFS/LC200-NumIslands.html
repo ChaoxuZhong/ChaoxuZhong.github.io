@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>LCR-130.衣橱整理 · MIT 6.824 学习笔记</title>
+        <title>LC200. 岛屿数量 · MIT 6.824 学习笔记</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 6.1.7">
@@ -56,10 +56,8 @@
     <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="Interview-04.01.html" />
     
-    
-    <link rel="prev" href="../DFS&BFS.html" />
+    <link rel="prev" href="Interview-08.10.html" />
     
 
     </head>
@@ -219,7 +217,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="1.5.1.1" data-path="LCR-130.html">
+        <li class="chapter " data-level="1.5.1.1" data-path="LCR-130.html">
             
                 <a href="LCR-130.html">
             
@@ -258,7 +256,7 @@
             
         </li>
     
-        <li class="chapter " data-level="1.5.1.4" data-path="LC200-NumIslands.html">
+        <li class="chapter active" data-level="1.5.1.4" data-path="LC200-NumIslands.html">
             
                 <a href="LC200-NumIslands.html">
             
@@ -311,7 +309,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../.." >LCR-130.衣橱整理</a>
+        <a href="../.." >LC200. 岛屿数量</a>
     </h1>
 </div>
 
@@ -326,86 +324,135 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h3 id="lcr-130-衣橱整理"><a href="https://leetcode.cn/problems/ji-qi-ren-de-yun-dong-fan-wei-lcof/" target="_blank">LCR 130. 衣橱整理</a></h3>
-<p><em>Medium · DFS · 矩阵</em></p>
-<p><strong>题目描述</strong></p>
-<p>整理师需要在m×n的衣橱矩阵中进行整理，从(0,0)开始，每次可以向右或向下移动一格。对于位置(i,j)，如果其数位和大于给定值cnt，则无需整理该格子。求解需要整理的总格子数。</p>
-<p><strong>解题思路</strong></p>
+                                <h1 id="岛屿数量">岛屿数量</h1>
+<h2 id="题目描述">题目描述</h2>
+<p>给你一个由 <code>'1'</code>（陆地）和 <code>'0'</code>（水）组成的二维网格，请你计算网格中岛屿的数量。岛屿总是被水包围，并且每座岛屿只能由水平方向和/或竖直方向上相邻的陆地连接形成。</p>
+<h2 id="解题思路">解题思路</h2>
 <ol>
-<li>这是一个典型的DFS（深度优先搜索）问题</li>
-<li>使用递归遍历所有可达的格子</li>
-<li>关键点是判断格子是否需要整理：计算坐标的数位和是否不超过cnt</li>
+<li><p><strong>DFS策略</strong>：</p>
+<ul>
+<li>遍历整个二维网格</li>
+<li>每当遇到一个「1」，就以该位置为起点进行DFS标记</li>
+<li>在DFS过程中将所有相连的「1」标记为已访问</li>
+<li>每完成一次完整的DFS，就代表找到了一个新的岛屿</li>
+</ul>
+</li>
+<li><p><strong>关键点</strong>：</p>
+<ul>
 <li>使用visited数组避免重复访问</li>
-<li>递归终止条件：越界、已访问或数位和超限</li>
+<li>定义四个方向的移动数组</li>
+<li>处理边界条件</li>
+<li>标记已访问的陆地</li>
+</ul>
+</li>
 </ol>
-<p><strong>代码实现</strong></p>
+<h2 id="代码实现">代码实现</h2>
 <pre><code class="lang-java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Solution</span> {
-    <span class="hljs-type">int</span> m, n, cnt;
-    <span class="hljs-type">boolean</span>[][] visited;
+    <span class="hljs-comment">// 定义四个方向：上、下、左、右</span>
+    <span class="hljs-comment">// Define four directions: up, down, left, right</span>
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span>[][] directions = {{<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{-<span class="hljs-number">1</span>,<span class="hljs-number">0</span>},{<span class="hljs-number">0</span>,<span class="hljs-number">1</span>},{<span class="hljs-number">0</span>,-<span class="hljs-number">1</span>}};
+    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span>[][] visited;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> rowLen;
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> colLen;
 
-    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">wardrobeFinishing</span><span class="hljs-params">(<span class="hljs-type">int</span> m, <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> cnt)</span> {
+    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">numIslands</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] grid)</span> {
         <span class="hljs-comment">// 初始化成员变量</span>
         <span class="hljs-comment">// Initialize member variables</span>
-        <span class="hljs-built_in">this</span>.m = m;
-        <span class="hljs-built_in">this</span>.n = n;
-        <span class="hljs-built_in">this</span>.cnt = cnt;
-        <span class="hljs-built_in">this</span>.visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[m][n];
+        rowLen = grid.length;
+        colLen = grid[<span class="hljs-number">0</span>].length;
+        visited = <span class="hljs-keyword">new</span> <span class="hljs-title class_">boolean</span>[rowLen][colLen];
+        <span class="hljs-type">int</span> <span class="hljs-variable">res</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
 
-        <span class="hljs-keyword">return</span> dfs(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+        <span class="hljs-comment">// 遍历整个网格</span>
+        <span class="hljs-comment">// Traverse the entire grid</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">row</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; row &lt; rowLen; row++){
+            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> <span class="hljs-variable">col</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; col &lt; colLen; col++){
+                res += dfs(grid, row, col);
+            }
+        }
+        <span class="hljs-keyword">return</span> res;
     }
 
-    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">int</span> row, <span class="hljs-type">int</span> col)</span> {
-        <span class="hljs-comment">// 处理边界条件：越界、已访问或数位和超限则返回0</span>
-        <span class="hljs-comment">// Handle boundary conditions: return 0 if out of bounds, visited, or sum of digits exceeds limit</span>
-        <span class="hljs-keyword">if</span> (row &gt;= m || col &gt;= n || visited[row][col] || !isValid(row, col)) {
+    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-title function_">dfs</span><span class="hljs-params">(<span class="hljs-type">char</span>[][] grid, <span class="hljs-type">int</span> row, <span class="hljs-type">int</span> col)</span>{
+        <span class="hljs-comment">// 越界、已访问或是水域，直接返回0</span>
+        <span class="hljs-comment">// Out of bounds, visited, or water area, return 0 directly</span>
+        <span class="hljs-keyword">if</span>(row &gt;= rowLen || row &lt; <span class="hljs-number">0</span> || 
+           col &gt;= colLen || col &lt; <span class="hljs-number">0</span> || 
+           visited[row][col] || 
+           grid[row][col] != <span class="hljs-string">'1'</span>){
             <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
         }
 
-        <span class="hljs-comment">// 标记当前格子已访问</span>
-        <span class="hljs-comment">// Mark current cell as visited</span>
+        <span class="hljs-comment">// 标记当前位置为已访问</span>
+        <span class="hljs-comment">// Mark current position as visited</span>
         visited[row][col] = <span class="hljs-literal">true</span>;
 
-        <span class="hljs-comment">// 递归探索右边和下边的格子</span>
-        <span class="hljs-comment">// Recursively explore right and down cells</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> + dfs(row + <span class="hljs-number">1</span>, col) + dfs(row, col + <span class="hljs-number">1</span>);
-    }
-
-    <span class="hljs-comment">// 判断格子是否有效（数位和是否不超过限制）</span>
-    <span class="hljs-comment">// Check if the cell is valid (sum of digits doesn't exceed the limit)</span>
-    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isValid</span><span class="hljs-params">(<span class="hljs-type">int</span> row, <span class="hljs-type">int</span> col)</span> {
-        <span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;
-        <span class="hljs-type">int</span> <span class="hljs-variable">tempRow</span> <span class="hljs-operator">=</span> row;
-        <span class="hljs-type">int</span> <span class="hljs-variable">tempCol</span> <span class="hljs-operator">=</span> col;
-
-        <span class="hljs-comment">// 计算行坐标的数位和</span>
-        <span class="hljs-comment">// Calculate sum of digits for row coordinate</span>
-        <span class="hljs-keyword">while</span> (tempRow != <span class="hljs-number">0</span>) {
-            sum += tempRow % <span class="hljs-number">10</span>;
-            tempRow /= <span class="hljs-number">10</span>;
+        <span class="hljs-comment">// 对四个方向进行DFS搜索</span>
+        <span class="hljs-comment">// Perform DFS search in four directions</span>
+        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span>[] direction : directions){
+            dfs(grid, row + direction[<span class="hljs-number">0</span>], col + direction[<span class="hljs-number">1</span>]);
         }
 
-        <span class="hljs-comment">// 计算列坐标的数位和</span>
-        <span class="hljs-comment">// Calculate sum of digits for column coordinate</span>
-        <span class="hljs-keyword">while</span> (tempCol != <span class="hljs-number">0</span>) {
-            sum += tempCol % <span class="hljs-number">10</span>;
-            tempCol /= <span class="hljs-number">10</span>;
-        }
-
-        <span class="hljs-keyword">return</span> sum &lt;= cnt;
+        <span class="hljs-comment">// 返回1表示找到了一个新的岛屿</span>
+        <span class="hljs-comment">// Return 1 indicating a new island has been found</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
     }
 }
 </code></pre>
-<p><strong>复杂度分析</strong></p>
+<p>```</p>
+<h2 id="复杂度分析">复杂度分析</h2>
 <ul>
-<li>时间复杂度：O(mn)，需要遍历所有可达的格子</li>
-<li>空间复杂度：O(mn)，visited数组占用的空间，递归深度最大为m+n</li>
+<li><p><strong>时间复杂度</strong>: O(M×N)</p>
+<ul>
+<li>M和N分别是网格的行数和列数</li>
+<li>每个格子最多被访问一次</li>
 </ul>
-<p><strong>优化</strong></p>
+</li>
+<li><p><strong>空间复杂度</strong>: O(M×N)</p>
+<ul>
+<li>visited数组占用O(M×N)空间</li>
+<li>最坏情况下递归深度为O(M×N)</li>
+</ul>
+</li>
+</ul>
+<h2 id="优化方案">优化方案</h2>
 <ol>
-<li>可以使用一个辅助函数预处理0-99的数位和，避免重复计算</li>
-<li>由于只能向右和向下移动，实际上不需要visited数组也可以避免重复访问</li>
-<li>可以改用迭代方式实现，避免递归带来的栈空间开销</li>
+<li><p><strong>空间优化</strong>：</p>
+<ul>
+<li>可以直接修改原数组而不使用visited数组</li>
+<li>将访问过的'1'修改为'0'或其他特殊字符</li>
+</ul>
+</li>
+<li><p><strong>代码优化</strong>：</p>
+<ul>
+<li>可以使用BFS替代DFS，在某些情况下可能更快</li>
+<li>使用方向数组简化代码</li>
+<li>提前处理特殊情况（空数组等）</li>
+</ul>
+</li>
+<li><p><strong>内存优化</strong>：</p>
+<ul>
+<li>使用迭代而不是递归，避免栈溢出</li>
+<li>使用队列实现BFS</li>
+</ul>
+</li>
 </ol>
+<h2 id="相关题目">相关题目</h2>
+<ul>
+<li>岛屿的最大面积</li>
+<li>封闭岛屿的数目</li>
+<li>飞地的数量</li>
+<li>统计封闭岛屿的数目</li>
+</ul>
+<h2 id="总结">总结</h2>
+<p>本题是经典的DFS应用题，核心在于：</p>
+<ol>
+<li>理解岛屿的连通性定义</li>
+<li>正确处理边界条件</li>
+<li>高效地标记已访问位置</li>
+<li>合理运用DFS遍历策略</li>
+</ol>
+<p>熟练掌握这类问题的解法对于解决其他图论相关题目很有帮助。</p>
 
                                 
                                 </section>
@@ -433,14 +480,10 @@
 
             
                 
-                <a href="../DFS&BFS.html" class="navigation navigation-prev " aria-label="Previous page: DFS&BFS">
+                <a href="Interview-08.10.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: 面试题 08.10. 颜色填充">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="Interview-04.01.html" class="navigation navigation-next " aria-label="Next page: 面试题 04.01. 节点间通路">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -449,7 +492,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"LCR-130.衣橱整理","level":"1.5.1.1","depth":3,"next":{"title":"面试题 04.01. 节点间通路","level":"1.5.1.2","depth":3,"path":"Algorithm/DFS&BFS/Interview-04.01.md","ref":"Algorithm/DFS&BFS/Interview-04.01.md","articles":[]},"previous":{"title":"DFS&BFS","level":"1.5.1","depth":2,"path":"Algorithm/DFS&BFS.md","ref":"Algorithm/DFS&BFS.md","articles":[{"title":"LCR-130.衣橱整理","level":"1.5.1.1","depth":3,"path":"Algorithm/DFS&BFS/LCR-130.md","ref":"Algorithm/DFS&BFS/LCR-130.md","articles":[]},{"title":"面试题 04.01. 节点间通路","level":"1.5.1.2","depth":3,"path":"Algorithm/DFS&BFS/Interview-04.01.md","ref":"Algorithm/DFS&BFS/Interview-04.01.md","articles":[]},{"title":"面试题 08.10. 颜色填充","level":"1.5.1.3","depth":3,"path":"Algorithm/DFS&BFS/Interview-08.10.md","ref":"Algorithm/DFS&BFS/Interview-08.10.md","articles":[]},{"title":"LC200. 岛屿数量","level":"1.5.1.4","depth":3,"path":"Algorithm/DFS&BFS/LC200-NumIslands.md","ref":"Algorithm/DFS&BFS/LC200-NumIslands.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":[],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Your Name","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"MIT 6.824 学习笔记","gitbook":"*"},"file":{"path":"Algorithm/DFS&BFS/LCR-130.md","mtime":"2026-04-13T03:40:03.403Z","type":"markdown"},"gitbook":{"version":"6.1.7","time":"2026-04-13T03:40:14.792Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"LC200. 岛屿数量","level":"1.5.1.4","depth":3,"previous":{"title":"面试题 08.10. 颜色填充","level":"1.5.1.3","depth":3,"path":"Algorithm/DFS&BFS/Interview-08.10.md","ref":"Algorithm/DFS&BFS/Interview-08.10.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Your Name","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"MIT 6.824 学习笔记","gitbook":"*"},"file":{"path":"Algorithm/DFS&BFS/LC200-NumIslands.md","mtime":"2026-04-13T03:40:03.403Z","type":"markdown"},"gitbook":{"version":"6.1.7","time":"2026-04-13T03:40:14.792Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

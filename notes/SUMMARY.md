@@ -1,7 +1,7 @@
 # Summary
 
 * [Introduction](README.md)
-* [MIT 6.824 2021 分布式系统](Mit6.824/Introduction.md)
+* [MIT 6.824 2021 分布式系统](Mit6.824/01_Introduction.md)
     * [介绍](Mit6.824/01_Introduction.md)
     * [测试](Mit6.824/02_RpcAndThreads.md)
 * [GitNode搭建日志](Log/GitNote搭建Log.md)
@@ -11,4 +11,5 @@
   * [DFS&BFS](Algorithm/DFS&BFS.md)
     * [LCR-130.衣橱整理](Algorithm/DFS&BFS/LCR-130.md) 
     * [面试题 04.01. 节点间通路](Algorithm/DFS&BFS/Interview-04.01.md) 
-    * [面试题 08.10. 颜色填充](Algorithm/DFS&BFS/Interview-08.10.md) 
+    * [面试题 08.10. 颜色填充](Algorithm/DFS&BFS/Interview-08.10.md)
+    * [LC200. 岛屿数量](Algorithm/DFS&BFS/LC200-NumIslands.md) 
